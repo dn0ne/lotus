@@ -254,7 +254,7 @@ fun WavingSeekBar(
             val handlePositionHours =
                 (currentDuration * handleOffsetFraction).toLong() / 1000 / 60 / 60
             val handlePositionMinutes =
-                (currentDuration * handleOffsetFraction).toLong() / 1000 / 60
+                (currentDuration * handleOffsetFraction).toLong() / 1000 / 60 % 60
             val handlePositionSeconds =
                 (currentDuration * handleOffsetFraction).toLong() / 1000 % 60
             val handlePositionText = buildString {
@@ -268,7 +268,7 @@ fun WavingSeekBar(
             }
 
             val durationHours = currentDuration / 1000 / 60 / 60
-            val durationMinutes = currentDuration / 1000 / 60
+            val durationMinutes = currentDuration / 1000 / 60 % 60
             val durationSeconds = currentDuration / 1000 % 60
             val durationText = buildString {
                 if (durationHours > 0) {
