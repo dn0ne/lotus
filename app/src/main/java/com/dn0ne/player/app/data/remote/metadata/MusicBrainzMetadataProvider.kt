@@ -181,10 +181,10 @@ private fun SearchResultDto.toMetadataSearchResultList(): List<MetadataSearchRes
         }.joinToString(separator = "")
         val genres = recording.tags?.map { it.name }
 
-        recording.releases?.fastFilter { it.artistCredit != null && it.media != null }?.map { release ->
-            val albumArtist = release.artistCredit!!.map {
+        recording.releases?.fastFilter { it.media != null }?.map { release ->
+            val albumArtist = release.artistCredit?.map {
                 it.name + (it.joinphrase ?: "")
-            }.joinToString(separator = "")
+            }?.joinToString(separator = "") ?: artist
             val trackNumber = release.media!!.first().track.first().number
             MetadataSearchResult(
                 id = recording.id,
