@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common back button -->
+    <string name="back">Geri</string>
+
+    <!-- Setup screens -->
+    <string name="get_started">Başla</string>
+    <string name="permissions">İzinler</string>
+    <string name="audio">Ses</string>
+    <string name="explain_audio_permission_requirement">Lotus, harika müziğinizi çalmak için buna ihtiyaç duyar</string>
+    <string name="grant_permission">İzin ver</string>
+    <string name="next">İleri</string>
+    <string name="grant_permission_in_settings">Lütfen ayarlardan izin verin</string>
+
+    <!-- Track metadata fields -->
+    <string name="title">Başlık</string>
+    <string name="album">Albüm</string>
+    <string name="artist">Sanatçı</string>
+    <string name="album_artist">Albüm Sanatçısı</string>
+    <string name="genre">Tür</string>
+    <string name="year">Yıl</string>
+    <string name="track_number">Parça Numarası</string>
+    <string name="bitrate">Bit Hızı</string>
+    <string name="duration">Süre</string>
+    <string name="size">Boyut</string>
+    <string name="path">Yol</string>
+    <string name="date_modified">Değiştirilme Tarihi</string>
+
+    <string name="unknown_title">Başlık Bilinmiyor</string>
+    <string name="unknown_album">Albüm Bilinmiyor</string>
+    <string name="unknown_artist">Sanatçı Bilinmiyor</string>
+    <string name="unknown_album_artist">Albüm Sanatçısı Bilinmiyor</string>
+    <string name="unknown_genre">Tür Bilinmiyor</string>
+    <string name="unknown_year">Yıl Bilinmiyor</string>
+    <string name="unknown_track_number">Parça Numarası Bilinmiyor</string>
+    <string name="unknown_bitrate">Bit Hızı Bilinmiyor</string>
+    <string name="unknown">Bilinmeyen</string>
+
+    <!-- Track dropdown menu -->
+    <string name="track_menu_button">Parça menü düğmesi</string>
+    <string name="play_next">Sıradaki olarak çal</string>
+    <string name="add_to_queue">Kuyruğa ekle</string>
+    <string name="remove_from_playlist">Çalma listesinden kaldır</string>
+    <string name="go_to_album">Albüme git</string>
+    <string name="go_to_artist">Sanatçıya git</string>
+
+    <!-- Tabs' names -->
+    <string name="tracks">Parçalar</string>
+    <string name="albums">Albümler</string>
+    <string name="artists">Sanatçılar</string>
+    <string name="genres">Türler</string>
+    <string name="playlists">Çalma Listeleri</string>
+    <string name="folders">Klasörler</string>
+
+    <!-- Sorting dialog -->
+    <string name="sort_order">Sıralama düzeni</string>
+    <string name="sort_ascending">Artan sıralama</string>
+    <string name="sort_descending">Azalan sıralama</string>
+    <string name="track_count">Parça sayısı</string>
+
+    <!-- Track search -->
+    <string name="close_track_search">Parça aramasını kapat</string>
+    <string name="track_search">Parça ara</string>
+
+    <!-- Scroll to buttons -->
+    <string name="scroll_to_top">En başa kaydır</string>
+    <string name="scroll_to_current_track">Geçerli parçaya kaydır</string>
+
+    <!-- Expanded player sheet -->
+    <string name="close_player_sheet">Oynatıcıyı küçült</string>
+    <string name="playback_mode_toggle">Oynatma modunu değiştir</string>
+    <string name="show_lyrics">Şarkı sözlerini göster</string>
+    <string name="set_sleep_timer">Uyku zamanlayıcısını ayarla</string>
+    <string name="sleep_timer">Uyku zamanlayıcısı</string>
+    <string name="short_minutes">dk</string>
+    <string name="stop_timer">Durdur</string>
+    <string name="start_timer">Başlat</string>
+
+    <!-- Play queue -->
+    <string name="remove_from_queue">Kuyruktan kaldır</string>
+    <string name="queue">Kuyruk</string>
+    <string name="show_queue">Kuyruğu göster</string>
+
+    <!-- Track info screen -->
+    <string name="track_info">Parça hakkında</string>
+    <string name="close_track_info_sheet">Parça bilgi ekranını kapat</string>
+    <string name="look_for_metadata">Üst verileri ara</string>
+    <string name="edit_manually">Elle düzenle</string>
+    <string name="back_to_track_info">Parça bilgi ekranına dön</string>
+
+    <!-- Risks of metadata editing dialog -->
+    <string name="risks_of_metadata_editing">Üst veri düzenleme riskleri</string>
+    <string name="risks_of_metadata_editing_explain">Üst verileri düzenlemek güçlü bir özelliktir, ancak bazen işler beklendiği gibi gitmeyebilir ve ses dosyası etiketleri öngörülemez davranabilir.\n\nDeğişiklik yapmadan önce ses dosyalarınızı yedeklemenizi öneririz - sonradan üzülmektense tedbirli olmak iyidir! \"Kabul Et\"e tıklayarak, dosyalarınızın sorumluluğunun size ait olduğunu, gerekli yedeklemeleri yaptığınızı ve öngörülemeyen bir durum oluşması halinde sorumlu tutulamayacağımızı kabul etmiş olursunuz.\n\nDevam etmek istemiyorsanız \"İptal\"e tıklayın.</string>
+    <string name="accept">Kabul Et</string>
+    <string name="cancel">İptal</string>
+
+    <!-- Metadata search screen -->
+    <string name="search">Ara</string>
+    <string name="description">Açıklama</string>
+    <string name="album_description">Albüm açıklaması</string>
+    <string name="no_description">Açıklama yok</string>
+    <string name="back_to_info_search">Üst veri arama ekranına dön</string>
+    <string name="search_menu">Üst veri arama ekranı açılır menüsü</string>
+    <string name="search_results_provided_by">Sonuçlar MusicBrainz tarafından sağlanmıştır</string>
+
+    <!-- Search tips dialog -->
+    <string name="got_it">Anlaşıldı</string>
+    <string name="search_tips">Arama ipuçları</string>
+    <string name="search_explain">Parça hakkında bilgi bulmanıza yardımcı olmak için MusicBrainz API kullanıyoruz. Basit filtrelerle aramanızı daha kesin hale getirebilirsiniz.</string>
+    <string name="quotes_explain_header">Tam eşleşmeler için tırnak işaretleri</string>
+    <string name="quotes_explain">Belirli kelimeleri veya kelime öbeklerini bulmak için tırnak işaretleri kullanın:</string>
+    <string name="quotes_example_1">\"4:44\"</string>
+    <string name="quotes_example_2"><![CDATA[\"7 Weeks & 3 Days\"]]></string>
+    <string name="field_explain_header">Sanatçı veya albüme göre arama</string>
+    <string name="field_explain">Belirli bir sanatçıyı veya albümü aşağıdaki gibi arayabilirsiniz:</string>
+    <string name="field_example_1">artist:\"Jay-Z\"</string>
+    <string name="field_example_2">release:\"Over You\"</string>
+    <string name="combine_explain_header">Filtreleri birleştirme</string>
+    <string name="combine_explain">Farklı filtreleri birleştirmek için \"AND\" kullanın:</string>
+    <string name="combine_example">\"4:44\" AND artist:\"Jay-Z\" AND release:\"4:44\"</string>
+
+    <!-- Search errors -->
+    <string name="unknown_error_occurred">Bilinmeyen bir hata oluştu. Lütfen tekrar deneyin.</string>
+    <string name="query_was_corrupted">İstek bozuldu. Lütfen tekrar deneyin.</string>
+    <string name="musicbrainz_server_error">MusicBrainz tarafında hata. Lütfen tekrar deneyin.</string>
+    <string name="musicbrainz_is_unavailable">MusicBrainz kullanılamıyor. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="failed_to_parse_response">Yanıt ayrıştırılamadı. Lütfen tekrar deneyin.</string>
+    <string name="no_internet">Çevrimdışı görünüyorsunuz. İnternete bağlanın ve tekrar deneyin.</string>
+
+    <!-- Changes screen -->
+    <string name="changes">Değişiklikler</string>
+    <string name="old_cover_art">Eski kapak</string>
+    <string name="new_cover_art">Yeni kapak</string>
+    <string name="overwrite">Üzerine yaz</string>
+    <string name="select_fields_to_overwrite">Üzerine yazılacak alanları seçin:</string>
+    <string name="metadata_change_succeed">Parça bilgisi başarıyla değiştirildi. Değişiklikler birkaç saniye içinde etkili olacak.</string>
+    <string name="important_to_know">Bilinmesi gerekenler</string>
+    <string name="artwork_change_note">Cihazınızda bu parçayı içeren bir albüm kapağı varsa, seçilen kapaktan bağımsız olarak o kullanılacaktır.</string>
+    <string name="cover_art_from_gallery_note">Galeriden seçilen kapağın görüntülenmesi için uygulamanın veya cihazın yeniden başlatılması gerekebilir.</string>
+
+    <!-- Changes errors -->
+    <string name="failed_to_load_cover_art_album_id_corrupted">Kapak yüklenemedi. Bu parça için albüm kimliği bozuk görünüyor.</string>
+    <string name="cover_art_not_found">Maalesef bu parça için kapak bulunamadı.</string>
+    <string name="cover_art_archive_is_unavailable">Kapak yüklenemedi. Cover Art Archive kullanılamıyor. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="failed_to_load_cover_art_request_timeout">Kapak 3 dakika içinde yüklenemedi. Lütfen ağ kalitesini kontrol edin ve tekrar deneyin.</string>
+
+    <!-- Metadata writing errors -->
+    <string name="write_permission_denied">Üst veriler üzerine yazılamadı. İzin reddedildi. Tekrar deneyin.</string>
+    <string name="no_read_permission">Okuma izni yok. Lütfen izin verin veya tekrar deneyin.</string>
+    <string name="no_write_permission">Yazma izni yok. Lütfen izin verin veya tekrar deneyin.</string>
+    <string name="failed_to_read">Dosya okunamadı. Lütfen tekrar deneyin.</string>
+    <string name="failed_to_write">Dosya yazılamadı. Lütfen tekrar deneyin.</string>
+
+    <!-- Manual editing screen -->
+    <string name="edit">Düzenleme</string>
+    <string name="pick_art">Kapak seç</string>
+    <string name="restore_art">Geri yükle</string>
+    <string name="restore_tag">Etiket değerini geri yükle</string>
+
+    <!-- Lyrics control screen -->
+    <string name="lyrics_control">Şarkı sözü yönetimi</string>
+    <string name="lyrics_in_tag">Etiketteki sözler</string>
+    <string name="lyrics_in_tag_explain">Ses dosyası etiketinde saklanan sözler</string>
+    <string name="lyrics_in_local_database">Yerel veritabanındaki sözler</string>
+    <string name="lyrics_in_local_database_explain">Etiketten kopyalanan, LRCLIB'den alınan veya dosyadan eklenen sözler. Şarkı sözü ekranında bunu görürsünüz.</string>
+    <string name="lyrics_actions">Şarkı sözü işlemleri</string>
+    <string name="lyrics_tools_explained">Yerel veritabanındaki sözleri yönetme veya değiştirme işlemleri</string>
+    <string name="clear_db_entry">Veritabanı kaydını temizle</string>
+    <string name="copy_from_tag">Etiketten kopyala</string>
+    <string name="import_from_file">Dosyadan içe aktar</string>
+    <string name="write_to_tag">Etikete yaz</string>
+    <string name="fetch_from_lrclib">LRCLIB'den al</string>
+    <string name="publish_on_lrclib">LRCLIB'de yayınla</string>
+    <string name="unable_to_publish">Yayınlanamıyor: başlık, sanatçı veya albüm belirtilmemiş.</string>
+    <string name="published_successfully">Başarıyla yayınlandı.</string>
+    <string name="solving_challenge">Doğrulama çözülüyor...</string>
+
+    <!-- Lyrics sheet -->
+    <string name="lyrics">Şarkı Sözleri</string>
+    <string name="close_lyrics_sheet">Şarkı sözlerini kapat</string>
+    <string name="loading_lyrics">Şarkı sözleri yükleniyor</string>
+    <string name="synced">Senk.</string>
+    <string name="plain">Düz</string>
+
+    <!-- Lyrics screen errors -->
+    <string name="cant_look_for_lyrics_title_or_artist_is_missing">Şarkı sözü bulunamıyor. Bu parça için başlık veya sanatçı belirtilmemiş.</string>
+    <string name="lyrics_not_found">Maalesef LRCLIB'de bu parça için şarkı sözü bulunamadı.</string>
+    <string name="cant_find_lyrics">Şarkı sözü bulunamadı.</string>
+    <string name="lyrics_provided_by">Şarkı sözleri LRCLIB tarafından sağlanmıştır</string>
+
+    <!-- Playlists related -->
+    <string name="create_playlist">Çalma listesi oluştur</string>
+    <string name="add_to_playlist">Çalma listesine ekle</string>
+    <string name="back_to_add_to_playlist">Çalma listesine eklemeye dön</string>
+    <string name="name">Ad</string>
+    <string name="new_playlist_title_placeholder">örn. Favoriler</string>
+    <string name="create">Oluştur</string>
+    <string name="reorder_track">Parça konumunu değiştir</string>
+    <string name="delete_playlist">Çalma listesini sil</string>
+    <string name="rename_playlist">Çalma listesini yeniden adlandır</string>
+    <string name="rename">Yeniden adlandır</string>
+    <string name="delete">Sil</string>
+    <string name="delete_playlist_dialog_title">Çalma listesi silinsin mi?</string>
+    <string name="delete_playlist_dialog_text">Bu işlem içindeki parçaları etkilemez.</string>
+    <string name="nothing_yet">Henüz bir şey yok.</string>
+    <string name="unknown_folder">Bilinmeyen klasör</string>
+    <string name="enable_list_view">Liste olarak görüntüle</string>
+    <string name="enable_grid_view">Izgara olarak görüntüle</string>
+
+    <!-- Playlists errors -->
+    <string name="blank_playlist_name_error">Lütfen çalma listesini adlandırın.</string>
+    <string name="playlist_already_exists_error">Bu ad zaten kullanılıyor.</string>
+    <string name="track_is_already_on_playlist">Bu parça zaten çalma listesinde.</string>
+
+    <!-- Settings sheet -->
+    <string name="settings">Ayarlar</string>
+    <string name="close_settings_sheet">Ayarları kapat</string>
+    <string name="theme">Tema</string>
+    <string name="theme_supporting_text">Görünüm, palet</string>
+    <string name="lyrics_supporting_text">Yazı tipi ayarları, hizalama</string>
+    <string name="playback">Oynatma</string>
+    <string name="playback_supporting_text">Ses odağı, ekvalayzer</string>
+    <string name="about_app">Uygulama hakkında</string>
+    <string name="about_explain">Sürüm, depo, geri bildirim</string>
+    <string name="music_scan">Müzik tarama</string>
+    <string name="music_scan_supporting_text">Filtre modu, klasör yönetimi, tarama</string>
+
+    <!-- Theme settings -->
+    <string name="appearance">Görünüm</string>
+    <string name="appearance_system">Sistem</string>
+    <string name="appearance_light">Açık</string>
+    <string name="appearance_dark">Koyu</string>
+
+    <string name="palette_style">Palet stili</string>
+    <string name="palette_tonal_spot">Tonal Spot</string>
+    <string name="palette_neutral">Nötr</string>
+    <string name="palette_vibrant">Canlı</string>
+    <string name="palette_expressive">Etkileyici</string>
+    <string name="palette_rainbow">Gökkuşağı</string>
+    <string name="palette_fruit_salad">Meyve salatası</string>
+    <string name="palette_monochrome">Tek renkli</string>
+    <string name="palette_fidelity">Doğruluk</string>
+    <string name="palette_content">İçerik</string>
+
+    <string name="black_theme">Siyah tema</string>
+    <string name="black_theme_explain">Koyu temayı gerçekten karanlık yap</string>
+    <string name="use_system_key_colors">Sistem renkleri</string>
+    <string name="use_system_key_colors_explain">Sistemin vurgu renklerini kullan</string>
+    <string name="use_album_art_color">Kapak rengi</string>
+    <string name="use_album_art_color_explain">Geçerli parça kapağının baskın rengini kullan</string>
+
+    <!-- Playback settings -->
+    <string name="audio_focus">Ses odağı</string>
+    <string name="audio_focus_explain">Başka bir uygulamanın ses çalması gerektiğinde oynatmayı duraklat</string>
+    <string name="changes_will_take_effect_on_next_launch">Değişiklikler bir sonraki başlatmada etkili olacaktır.</string>
+    <string name="equalizer">Ekvalayzer</string>
+    <string name="equalizer_explain">Manuel ses ayarı</string>
+
+    <!-- Tabs settings -->
+    <string name="tabs">Sekmeler</string>
+    <string name="tabs_supporting_text">Varsayılan sekme ve sıra</string>
+    <string name="default_tab_and_order">Varsayılan sekme ve sıra</string>
+    <string name="reorder_tab">Sekme sırasını değiştir</string>
+    <string name="jump_to_beginning">Başa dön</string>
+    <string name="jump_to_beginning_explain">Önceki düğmesine ilk basışta mevcut parçayı yeniden başlat</string>
+
+    <!-- Playlists settings -->
+    <string name="filter_instead_of_search">Arama yerine filtre</string>
+    <string name="filter_instead_of_search_explain">Çalma listesi aramasını filtre ile değiştir</string>
+    <string name="playlists_supporting_text">Arama alanı, içe aktarma</string>
+    <string name="filter">Filtre</string>
+    <string name="import_playlist">Çalma listesini içe aktar</string>
+    <string name="import_playlist_explain">M3U dosyasından çalma listesi ekle</string>
+    <string name="imported_successfully">Başarıyla içe aktarıldı.</string>
+
+    <!-- Lyrics settings -->
+    <string name="dark_theme_for_lyrics">Şarkı sözleri için koyu tema</string>
+    <string name="dark_theme_for_lyrics_explain">Açık mod etkin olsa bile şarkı sözlerine koyu tema uygula</string>
+    <string name="lyrics_preview_string">Bu çok çok çok uzun satır, bu ayarlarla şarkı sözlerinin ilgili ekranda nasıl görüneceğini gösterir</string>
+    <string name="font_size">Yazı tipi boyutu</string>
+    <string name="font_weight">Yazı tipi kalınlığı</string>
+    <string name="line_height">Satır yüksekliği</string>
+    <string name="letter_spacing">Harf aralığı</string>
+    <string name="alignment">Hizalama</string>
+    <string name="start">Sola yasla</string>
+    <string name="center">Ortala</string>
+    <string name="end">Sağa yasla</string>
+    <string name="reset">Sıfırla</string>
+
+    <!-- Music scan settings -->
+    <string name="include_music_folder">Müzik klasörünü dahil et</string>
+    <string name="include_music_folder_explain">Varsayılan "Müzik" klasöründeki müziği göster</string>
+    <string name="included_folders">Dahil edilen klasörler</string>
+    <string name="pick_folder_to_include_in_scanning">Taramaya dahil edilecek klasörü seçin</string>
+    <string name="remove_folder_from_included_in_scanning">Taramaya dahil edilenlerden klasörü kaldır</string>
+    <string name="folders_with_audio">Ses içeren klasörler</string>
+    <string name="include_folder_in_scanning">Klasörü taramaya dahil et</string>
+    <string name="scan_for_folders_with_audio">Sesli klasörleri bul</string>
+    <string name="filter_mode">Filtre modu</string>
+    <string name="filter_mode_explain">Belirtilen klasörlerden veya bunlar dışındakilerden müzik göster</string>
+    <string name="inclusive">Dahil etme</string>
+    <string name="exclusive">Hariç tutma</string>
+    <string name="excluded_folders">Hariç tutulan klasörler</string>
+    <string name="pick_folder_to_exclude_from_scanning">Taramadan hariç tutulacak klasörü seçin</string>
+    <string name="remove_folder_from_excluded_from_scanning">Taramadan hariç tutulanlardan klasörü kaldır</string>
+    <string name="exclude_folder_from_scanning">Klasörü taramadan hariç tut</string>
+    <string name="scanned_successfully">Tarama başarıyla tamamlandı</string>
+    <string name="refresh_on_app_launch">Başlangıçta güncelle</string>
+    <string name="refresh_on_app_launch_explain">Uygulama başlatıldığında MediaStore verilerini güncelle</string>
+    <string name="refresh">MediaStore'u Güncelle</string>
+    <string name="refresh_explain">MediaStore'da zaten bulunan verileri güncelle</string>
+    <string name="scan_folder">Klasörü tara</string>
+    <string name="scan_folder_explain">Yeni verileri MediaStore'a dahil etmek için klasörü tara</string>
+    <string name="failed_to_scan">Tarama başarısız oldu</string>
+    <string name="nothing_to_refresh">Güncellenecek bir şey yok</string>
+    <string name="refreshed_successfully">Başarıyla güncellendi</string>
+    <string name="failed_to_refresh">Güncellenemedi</string>
+    <string name="ignore_short_tracks">Kısa parçaları yoksay</string>
+    <string name="ignore_short_tracks_explain">30 saniyeden kısa parçaları gösterme</string>
+
+    <!-- About screen -->
+    <string name="repo">Depo</string>
+    <string name="repo_explain">Proje deposunu inceleyin</string>
+    <string name="feedback">Geri bildirim</string>
+    <string name="feedback_explain">Özellik önermek veya sorun bildirmek için bizimle iletişime geçin</string>
+
+    <!-- Open a track with "Open with..." dialog -->
+    <string name="track_is_not_found_in_media_store">Maalesef bu parça oynatıcı için kullanılamıyor. Bunun nedeni, taramaya dahil edilmeyen bir klasörde olması olabilir.</string>
+
+    <string name="copy_error">Hatayı kopyala</string>
+    <string name="select_all">Tümünü seç</string>
+</resources>
