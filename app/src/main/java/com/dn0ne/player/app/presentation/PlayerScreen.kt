@@ -140,7 +140,7 @@ fun PlayerScreen(
                     ?.swatches
                     ?.sortedByDescending { it.population }
                     ?.let { swatches ->
-                        val firstSwatch = swatches.first()
+                        val firstSwatch = swatches.firstOrNull() ?: return@let null
                         val firstSwatchColorHct = firstSwatch.color.toHct()
                         val firstSwatchPopulation = firstSwatch.population
                         val moreChromatic = swatches.fastFirstOrNull {

@@ -10,11 +10,9 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.rememberSplineBasedDecay
-import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -561,24 +559,16 @@ fun ExpandedPlayer(
                             )
                         }
 
-                        AnimatedVisibility(
-                            visible = playbackState.playbackMode != PlaybackMode.Shuffle,
-                            enter = expandHorizontally(),
-                            exit = shrinkHorizontally()
-                        ) {
-                            IconButton(
-                                onClick = {
-                                    if (playbackState.playbackMode != PlaybackMode.Shuffle) {
-                                        showQueue = true
-                                    }
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Rounded.QueueMusic,
-                                    contentDescription = context.resources.getString(R.string.show_queue),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
+                        IconButton(
+                            onClick = {
+                                showQueue = true
                             }
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.QueueMusic,
+                                contentDescription = context.resources.getString(R.string.show_queue),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
 
                         IconButton(
@@ -759,24 +749,16 @@ fun ExpandedPlayer(
                                     )
                                 }
 
-                                AnimatedVisibility(
-                                    visible = playbackState.playbackMode != PlaybackMode.Shuffle,
-                                    enter = expandHorizontally(),
-                                    exit = shrinkHorizontally()
-                                ) {
-                                    IconButton(
-                                        onClick = {
-                                            if (playbackState.playbackMode != PlaybackMode.Shuffle) {
-                                                showQueue = true
-                                            }
-                                        }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Rounded.QueueMusic,
-                                            contentDescription = context.resources.getString(R.string.show_queue),
-                                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                                IconButton(
+                                    onClick = {
+                                        showQueue = true
                                     }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.QueueMusic,
+                                        contentDescription = context.resources.getString(R.string.show_queue),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                 }
 
                                 IconButton(
