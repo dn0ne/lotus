@@ -4,6 +4,7 @@
   # Lotus
 
   ### Music player for Android
+  ### Fork of [dn0ne/lotus](https://github.com/dn0ne/lotus)
   
 </div>
 
