@@ -5,22 +5,52 @@ import org.junit.Test
 
 class PlayNextTargetIndexTest {
 
-    private fun move(queue: List<String>, from: Int, to: Int) =
-        queue.toMutableList().apply { add(to, removeAt(from)) }
+    /** Runs one "play next" pick on a queue whose playing track is named "current". */
+    private fun playNext(queue: List<String>, track: String, anchor: String? = null): List<String> {
+        val afterIndex = playNextAfterIndex(
+            currentTrackIndex = queue.indexOf("current"),
+            anchorIndex = anchor?.let { queue.indexOf(it) } ?: -1
+        )
+        val trackIndex = queue.indexOf(track)
+
+        return queue.toMutableList().apply {
+            add(playNextTargetIndex(trackIndex, afterIndex), removeAt(trackIndex))
+        }
+    }
 
     @Test
     fun `track queued after the current one lands right after it`() {
-        val queue = listOf("a", "current", "b", "target")
-        val moved = move(queue, 3, playNextTargetIndex(trackIndex = 3, currentTrackIndex = 1))
-
-        assertEquals(listOf("a", "current", "target", "b"), moved)
+        assertEquals(
+            listOf("a", "current", "target", "b"),
+            playNext(listOf("a", "current", "b", "target"), track = "target")
+        )
     }
 
     @Test
     fun `track queued before the current one lands right after it`() {
-        val queue = listOf("target", "a", "current", "b")
-        val moved = move(queue, 0, playNextTargetIndex(trackIndex = 0, currentTrackIndex = 2))
+        assertEquals(
+            listOf("a", "current", "target", "b"),
+            playNext(listOf("target", "a", "current", "b"), track = "target")
+        )
+    }
 
-        assertEquals(listOf("a", "current", "target", "b"), moved)
+    @Test
+    fun `successive picks play in the order they were added`() {
+        val queue = listOf("current", "a", "first", "second")
+        val afterFirst = playNext(queue, track = "first")
+
+        assertEquals(
+            listOf("current", "first", "second", "a"),
+            playNext(afterFirst, track = "second", anchor = "first")
+        )
+    }
+
+    @Test
+    fun `pick starts a fresh block once the previous one has been played`() {
+        // "played" sits behind the playing track, so it is no longer a pending pick
+        assertEquals(
+            listOf("played", "current", "target", "a"),
+            playNext(listOf("played", "current", "a", "target"), track = "target", anchor = "played")
+        )
     }
 }

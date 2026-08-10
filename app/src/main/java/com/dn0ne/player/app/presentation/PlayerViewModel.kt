@@ -197,6 +197,12 @@ class PlayerViewModel(
      */
     private var unshuffledPlaylist: Playlist? = null
 
+    /**
+     * Last track queued with "play next", while it is still waiting to be played.
+     * Successive picks line up behind it instead of each one cutting in front.
+     */
+    private var playNextAnchor: Track? = null
+
     private val _infoSearchSheetState = MutableStateFlow(InfoSearchSheetState())
     private val _changesSheetState = MutableStateFlow(ChangesSheetState())
     private val _manualInfoEditSheetState = MutableStateFlow(ManualInfoEditSheetState())
@@ -599,20 +605,25 @@ class PlayerViewModel(
                     val currentTrackIndex = _playbackState.value.currentTrack?.let {
                         playlist.trackList.indexOf(it)
                     } ?: 0
+                    val afterIndex = playNextAfterIndex(
+                        currentTrackIndex = currentTrackIndex,
+                        anchorIndex = playNextAnchor?.let { playlist.trackList.indexOf(it) } ?: -1
+                    )
 
                     if (trackIndex >= 0) {
                         onEvent(
                             OnReorderingQueue(
                                 trackIndex,
-                                playNextTargetIndex(trackIndex, currentTrackIndex)
+                                playNextTargetIndex(trackIndex, afterIndex)
                                     .coerceAtMost(playlist.trackList.lastIndex)
                             )
                         )
+                        playNextAnchor = event.track
                         return
                     } else {
                         player?.let { player ->
                             player.addMediaItem(
-                                player.currentMediaItemIndex + 1,
+                                afterIndex + 1,
                                 event.track.mediaItem
                             )
 
@@ -620,11 +631,12 @@ class PlayerViewModel(
                                 it.copy(
                                     playlist = playlist.copy(
                                         trackList = playlist.trackList.toMutableList().apply {
-                                            add(currentTrackIndex + 1, event.track)
+                                            add(afterIndex + 1, event.track)
                                         }
                                     )
                                 )
                             }
+                            playNextAnchor = event.track
                         }
 
                     }
@@ -1646,12 +1658,20 @@ class PlayerViewModel(
 }
 
 /**
- * Index a queued track at [trackIndex] must be moved to so it plays right after the
- * track at [currentTrackIndex].
+ * Index a queued track at [trackIndex] must be moved to so it ends up right behind the
+ * track at [afterIndex].
  *
- * Moving is remove-then-insert: pulling a track out from before the current one shifts
- * the current one down a slot, so the slot behind it is [currentTrackIndex]. Pulling one
- * out from after leaves the current one where it is, so the slot behind it is one later.
+ * Moving is remove-then-insert: pulling a track out from before [afterIndex] shifts that
+ * track down a slot, so the slot behind it is [afterIndex]. Pulling one out from after it
+ * leaves it where it is, so the slot behind it is one later.
  */
-internal fun playNextTargetIndex(trackIndex: Int, currentTrackIndex: Int): Int =
-    if (trackIndex > currentTrackIndex) currentTrackIndex + 1 else currentTrackIndex
+internal fun playNextTargetIndex(trackIndex: Int, afterIndex: Int): Int =
+    if (trackIndex > afterIndex) afterIndex + 1 else afterIndex
+
+/**
+ * Index a "play next" pick should land behind: the tail of the pending "play next" block
+ * ([anchorIndex]) while it is still ahead of playback, otherwise the playing track itself.
+ * Keeps successive picks in the order they were added rather than newest-first.
+ */
+internal fun playNextAfterIndex(currentTrackIndex: Int, anchorIndex: Int): Int =
+    if (anchorIndex > currentTrackIndex) anchorIndex else currentTrackIndex
