@@ -577,6 +577,20 @@ class PlayerViewModel(
                 }
             }
 
+            OnShuffleQueueClick -> {
+                // Keep the order captured when shuffle mode was entered, so turning
+                // shuffle off still restores the original queue.
+                val original = unshuffledPlaylist
+                shuffleCurrentQueue()
+                original?.let { unshuffledPlaylist = it }
+            }
+
+            OnRefreshMediaStoreClick -> {
+                viewModelScope.launch {
+                    musicScanner.refreshMedia()
+                }
+            }
+
             is OnPlayNextClick -> {
                 if (_playbackState.value.currentTrack == event.track) return
 
@@ -590,7 +604,8 @@ class PlayerViewModel(
                         onEvent(
                             OnReorderingQueue(
                                 trackIndex,
-                                (currentTrackIndex).coerceAtMost(playlist.trackList.lastIndex)
+                                playNextTargetIndex(trackIndex, currentTrackIndex)
+                                    .coerceAtMost(playlist.trackList.lastIndex)
                             )
                         )
                         return
@@ -1629,3 +1644,14 @@ class PlayerViewModel(
         return getOrNull((index + 1) % size)
     }
 }
+
+/**
+ * Index a queued track at [trackIndex] must be moved to so it plays right after the
+ * track at [currentTrackIndex].
+ *
+ * Moving is remove-then-insert: pulling a track out from before the current one shifts
+ * the current one down a slot, so the slot behind it is [currentTrackIndex]. Pulling one
+ * out from after leaves the current one where it is, so the slot behind it is one later.
+ */
+internal fun playNextTargetIndex(trackIndex: Int, currentTrackIndex: Int): Int =
+    if (trackIndex > currentTrackIndex) currentTrackIndex + 1 else currentTrackIndex

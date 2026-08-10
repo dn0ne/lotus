@@ -119,6 +119,7 @@ fun PlayerSheet(
     onLyricsClick: () -> Unit,
     onRemoveFromQueueClick: (Int) -> Unit,
     onReorderingQueue: (Int, Int) -> Unit,
+    onShuffleQueueClick: () -> Unit,
     onTrackClick: (Track, Playlist) -> Unit,
     settings: Settings,
     modifier: Modifier = Modifier
@@ -302,6 +303,7 @@ fun PlayerSheet(
                     },
                     onRemoveFromQueueClick = onRemoveFromQueueClick,
                     onReorderingQueue = onReorderingQueue,
+                    onShuffleQueueClick = onShuffleQueueClick,
                     onTrackClick = onTrackClick,
                     modifier = Modifier.clickable(
                         onClick = {},
@@ -490,6 +492,7 @@ fun ExpandedPlayer(
     lyricsContentColor: Color,
     onRemoveFromQueueClick: (Int) -> Unit,
     onReorderingQueue: (Int, Int) -> Unit,
+    onShuffleQueueClick: () -> Unit,
     onTrackClick: (Track, Playlist) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -905,6 +908,7 @@ fun ExpandedPlayer(
                 onRemoveFromQueueClick = onRemoveFromQueueClick,
                 onReorderingQueue = onReorderingQueue,
                 onTrackClick = onTrackClick,
+                onShuffleClick = onShuffleQueueClick,
                 onBackClick = {
                     showQueue = false
                 }

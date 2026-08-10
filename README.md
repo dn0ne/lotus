@@ -28,14 +28,12 @@
 - Enhance your listening experience with synchronized lyrics from [LRCLIB](https://lrclib.net/)
 - Manually update track details or fetch accurate info from [MusicBrainz](https://musicbrainz.org/)
 - Designed with [Material You](https://m3.material.io/) and supports dynamic color palettes
+- See and edit the play queue, reorder or shuffle it whenever you like
+- Refresh MediaStore right from the main screen to pick up newly added music
 
 ## Download
 Latest stable version is available on [GitHub releases](https://github.com/dn0ne/lotus/releases/latest)
 
-Stable releases are also available on [F-Droid](https://f-droid.org/packages/com.dn0ne.lotus)
-
-## Support
-If you enjoy using Lotus, consider [buying me a coffee](https://en.liberapay.com/dn0ne/donate)!
 
 ## Build
 1. **Get the Source Code**  

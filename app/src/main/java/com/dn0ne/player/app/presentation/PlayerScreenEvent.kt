@@ -62,6 +62,9 @@ sealed interface PlayerScreenEvent {
 
     data class OnRemoveFromQueueClick(val index: Int): PlayerScreenEvent
     data class OnReorderingQueue(val from: Int, val to: Int): PlayerScreenEvent
+    data object OnShuffleQueueClick: PlayerScreenEvent
+
+    data object OnRefreshMediaStoreClick: PlayerScreenEvent
 
     data object OnLyricsControlClick: PlayerScreenEvent
     data object OnDeleteLyricsClick: PlayerScreenEvent
