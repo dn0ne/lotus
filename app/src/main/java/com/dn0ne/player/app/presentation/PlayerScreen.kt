@@ -39,6 +39,7 @@ import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.MyLocation
+import androidx.compose.material.icons.rounded.Radar
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.SelectAll
 import androidx.compose.material.icons.rounded.Settings
@@ -140,7 +141,7 @@ fun PlayerScreen(
                     ?.swatches
                     ?.sortedByDescending { it.population }
                     ?.let { swatches ->
-                        val firstSwatch = swatches.first()
+                        val firstSwatch = swatches.firstOrNull() ?: return@let null
                         val firstSwatchColorHct = firstSwatch.color.toHct()
                         val firstSwatchPopulation = firstSwatch.population
                         val moreChromatic = swatches.fastFirstOrNull {
@@ -442,6 +443,9 @@ fun PlayerScreen(
                             },
                             onSettingsClick = {
                                 viewModel.onEvent(PlayerScreenEvent.OnSettingsClick)
+                            },
+                            onRefreshMediaStoreClick = {
+                                viewModel.onEvent(PlayerScreenEvent.OnRefreshMediaStoreClick)
                             },
                             replaceSearchWithFilter = replaceSearchWithFilter,
                             gridPlaylists = gridPlaylists,
@@ -820,6 +824,9 @@ fun PlayerScreen(
                                 onReorderingQueue = { from, to ->
                                     viewModel.onEvent(PlayerScreenEvent.OnReorderingQueue(from, to))
                                 },
+                                onShuffleQueueClick = {
+                                    viewModel.onEvent(PlayerScreenEvent.OnShuffleQueueClick)
+                                },
                                 onTrackClick = { track, playlist ->
                                     viewModel.onEvent(
                                         PlayerScreenEvent.OnTrackClick(
@@ -961,7 +968,8 @@ fun MainPlayerScreen(
     replaceSearchWithFilter: Boolean,
     gridPlaylists: Boolean,
     onGridPlaylistsClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    onRefreshMediaStoreClick: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -1086,6 +1094,17 @@ fun MainPlayerScreen(
                                             )
                                         )
                                     }
+                                }
+
+                                IconButton(
+                                    onClick = onRefreshMediaStoreClick
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Radar,
+                                        contentDescription = context.resources.getString(
+                                            R.string.refresh
+                                        )
+                                    )
                                 }
 
                                 IconButton(

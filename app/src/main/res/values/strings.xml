@@ -92,6 +92,7 @@
     <string name="remove_from_queue">Remove from queue</string>
     <string name="queue">Queue</string>
     <string name="show_queue">Show queue</string>
+    <string name="shuffle_queue">Shuffle queue</string>
 
     <!-- Track info screen -->
     <string name="track_info">Track info</string>

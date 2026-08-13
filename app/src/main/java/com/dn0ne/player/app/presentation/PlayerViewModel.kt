@@ -191,6 +191,18 @@ class PlayerViewModel(
 
     private var positionUpdateJob: Job? = null
 
+    /**
+     * Original track order before shuffle was enabled.
+     * Used to restore the queue when shuffle is turned off.
+     */
+    private var unshuffledPlaylist: Playlist? = null
+
+    /**
+     * Last track queued with "play next", while it is still waiting to be played.
+     * Successive picks line up behind it instead of each one cutting in front.
+     */
+    private var playNextAnchor: Track? = null
+
     private val _infoSearchSheetState = MutableStateFlow(InfoSearchSheetState())
     private val _changesSheetState = MutableStateFlow(ChangesSheetState())
     private val _manualInfoEditSheetState = MutableStateFlow(ManualInfoEditSheetState())
@@ -372,7 +384,8 @@ class PlayerViewModel(
         when (event) {
             is OnTrackClick -> {
                 player?.let { player ->
-                    if (_playbackState.value.playlist != event.playlist) {
+                    val isNewPlaylist = _playbackState.value.playlist != event.playlist
+                    if (isNewPlaylist) {
                         player.clearMediaItems()
                         player.addMediaItems(
                             event.playlist.trackList.fastMap { track -> track.mediaItem }
@@ -396,6 +409,12 @@ class PlayerViewModel(
                     viewModelScope.launch(Dispatchers.IO) {
                         savedPlayerState.playlist = event.playlist
                         savedPlayerState.track = event.track
+                    }
+
+                    // Starting a new playlist while shuffle is on materializes a fresh
+                    // shuffled order (clicked track first).
+                    if (isNewPlaylist && _playbackState.value.playbackMode == PlaybackMode.Shuffle) {
+                        shuffleCurrentQueue()
                     }
                 }
             }
@@ -465,11 +484,22 @@ class PlayerViewModel(
             }
 
             OnPlaybackModeClick -> {
-                val newPlaybackMode = _playbackState.value.playbackMode.let {
-                    PlaybackMode.entries.nextAfterOrNull(it.ordinal)
-                }
+                val oldMode = _playbackState.value.playbackMode
+                val newPlaybackMode = PlaybackMode.entries.nextAfterOrNull(oldMode.ordinal)
                 newPlaybackMode?.let { mode ->
                     setPlayerPlaybackMode(mode)
+
+                    when {
+                        // Entering shuffle: materialize a shuffled queue order.
+                        mode == PlaybackMode.Shuffle && oldMode != PlaybackMode.Shuffle -> {
+                            shuffleCurrentQueue()
+                        }
+                        // Leaving shuffle: restore the original queue order.
+                        oldMode == PlaybackMode.Shuffle && mode != PlaybackMode.Shuffle -> {
+                            restoreUnshuffledQueue()
+                        }
+                    }
+
                     _playbackState.update {
                         it.copy(
                             playbackMode = mode
@@ -553,6 +583,20 @@ class PlayerViewModel(
                 }
             }
 
+            OnShuffleQueueClick -> {
+                // Keep the order captured when shuffle mode was entered, so turning
+                // shuffle off still restores the original queue.
+                val original = unshuffledPlaylist
+                shuffleCurrentQueue()
+                original?.let { unshuffledPlaylist = it }
+            }
+
+            OnRefreshMediaStoreClick -> {
+                viewModelScope.launch {
+                    musicScanner.refreshMedia()
+                }
+            }
+
             is OnPlayNextClick -> {
                 if (_playbackState.value.currentTrack == event.track) return
 
@@ -561,19 +605,25 @@ class PlayerViewModel(
                     val currentTrackIndex = _playbackState.value.currentTrack?.let {
                         playlist.trackList.indexOf(it)
                     } ?: 0
+                    val afterIndex = playNextAfterIndex(
+                        currentTrackIndex = currentTrackIndex,
+                        anchorIndex = playNextAnchor?.let { playlist.trackList.indexOf(it) } ?: -1
+                    )
 
                     if (trackIndex >= 0) {
                         onEvent(
                             OnReorderingQueue(
                                 trackIndex,
-                                (currentTrackIndex).coerceAtMost(playlist.trackList.lastIndex)
+                                playNextTargetIndex(trackIndex, afterIndex)
+                                    .coerceAtMost(playlist.trackList.lastIndex)
                             )
                         )
+                        playNextAnchor = event.track
                         return
                     } else {
                         player?.let { player ->
                             player.addMediaItem(
-                                player.currentMediaItemIndex + 1,
+                                afterIndex + 1,
                                 event.track.mediaItem
                             )
 
@@ -581,11 +631,12 @@ class PlayerViewModel(
                                 it.copy(
                                     playlist = playlist.copy(
                                         trackList = playlist.trackList.toMutableList().apply {
-                                            add(currentTrackIndex + 1, event.track)
+                                            add(afterIndex + 1, event.track)
                                         }
                                     )
                                 )
                             }
+                            playNextAnchor = event.track
                         }
 
                     }
@@ -1352,22 +1403,88 @@ class PlayerViewModel(
     }
 
     private fun setPlayerPlaybackMode(playbackMode: PlaybackMode) {
-        when (playbackMode) {
-            PlaybackMode.Repeat -> {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-                player?.shuffleModeEnabled = false
-            }
+        // Shuffle order is materialized into the queue itself (see shuffleCurrentQueue),
+        // so ExoPlayer's internal shuffle stays disabled to keep media item indices
+        // aligned 1:1 with the visible queue.
+        player?.shuffleModeEnabled = false
+        player?.repeatMode = when (playbackMode) {
+            PlaybackMode.RepeatOne -> Player.REPEAT_MODE_ONE
+            PlaybackMode.Repeat, PlaybackMode.Shuffle -> Player.REPEAT_MODE_ALL
+        }
+    }
 
-            PlaybackMode.RepeatOne -> {
-                player?.repeatMode = Player.REPEAT_MODE_ONE
-                player?.shuffleModeEnabled = false
-            }
+    /**
+     * Reorders the playing queue to [newOrder], keeping the current track playing
+     * from its current position. Updates [_playbackState] and persisted state so the
+     * visible queue matches the player's media items.
+     */
+    private fun applyQueueOrder(newOrder: List<Track>) {
+        val player = player ?: return
+        val currentTrack = _playbackState.value.currentTrack
+        val targetIndex = newOrder.indexOfFirst { it == currentTrack }
 
-            PlaybackMode.Shuffle -> {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-                player?.shuffleModeEnabled = true
+        if (currentTrack == null || targetIndex < 0) {
+            // Nothing playing — safe to replace the whole queue.
+            player.setMediaItems(newOrder.fastMap { it.mediaItem })
+            player.prepare()
+        } else {
+            // Reorder around the playing item so it never re-buffers (no stutter):
+            // 1. move the playing item to the front,
+            // 2. drop every other item,
+            // 3. re-add the others in the new order,
+            // 4. slide the playing item back to its target slot.
+            player.moveMediaItem(player.currentMediaItemIndex, 0)
+            if (player.mediaItemCount > 1) {
+                player.removeMediaItems(1, player.mediaItemCount)
+            }
+            val others = newOrder.filter { it != currentTrack }
+            player.addMediaItems(others.fastMap { it.mediaItem })
+            if (targetIndex != 0) {
+                player.moveMediaItem(0, targetIndex)
             }
         }
+
+        _playbackState.update {
+            it.copy(
+                playlist = it.playlist?.copy(trackList = newOrder)
+            )
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            savedPlayerState.playlist = _playbackState.value.playlist
+        }
+    }
+
+    /**
+     * Shuffles the current queue, keeping the currently playing track first so playback
+     * is uninterrupted. Remembers the pre-shuffle order in [unshuffledPlaylist].
+     */
+    private fun shuffleCurrentQueue() {
+        val playlist = _playbackState.value.playlist ?: return
+        unshuffledPlaylist = playlist
+
+        val currentTrack = _playbackState.value.currentTrack
+        val shuffled = playlist.trackList
+            .filter { it != currentTrack }
+            .shuffled()
+        applyQueueOrder(listOfNotNull(currentTrack) + shuffled)
+    }
+
+    /**
+     * Restores the queue to its pre-shuffle order. Tracks added or removed while shuffled
+     * are reconciled so nothing disappears or reappears unexpectedly.
+     */
+    private fun restoreUnshuffledQueue() {
+        val original = unshuffledPlaylist ?: return
+        val currentTracks = _playbackState.value.playlist?.trackList ?: return
+
+        // Keep original ordering, drop tracks removed while shuffled,
+        // then append any tracks added while shuffled.
+        val restored = original.trackList.filter { it in currentTracks } +
+                currentTracks.filter { it !in original.trackList }
+
+        applyQueueOrder(restored)
+        unshuffledPlaylist = null
     }
 
     private fun readLyricsFromTag(track: Track): Lyrics? {
@@ -1539,3 +1656,22 @@ class PlayerViewModel(
         return getOrNull((index + 1) % size)
     }
 }
+
+/**
+ * Index a queued track at [trackIndex] must be moved to so it ends up right behind the
+ * track at [afterIndex].
+ *
+ * Moving is remove-then-insert: pulling a track out from before [afterIndex] shifts that
+ * track down a slot, so the slot behind it is [afterIndex]. Pulling one out from after it
+ * leaves it where it is, so the slot behind it is one later.
+ */
+internal fun playNextTargetIndex(trackIndex: Int, afterIndex: Int): Int =
+    if (trackIndex > afterIndex) afterIndex + 1 else afterIndex
+
+/**
+ * Index a "play next" pick should land behind: the tail of the pending "play next" block
+ * ([anchorIndex]) while it is still ahead of playback, otherwise the playing track itself.
+ * Keeps successive picks in the order they were added rather than newest-first.
+ */
+internal fun playNextAfterIndex(currentTrackIndex: Int, anchorIndex: Int): Int =
+    if (anchorIndex > currentTrackIndex) anchorIndex else currentTrackIndex

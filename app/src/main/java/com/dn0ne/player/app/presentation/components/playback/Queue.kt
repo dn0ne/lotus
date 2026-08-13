@@ -22,6 +22,7 @@ import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -71,6 +72,7 @@ fun Queue(
     onRemoveFromQueueClick: (index: Int) -> Unit,
     onReorderingQueue: (from: Int, to: Int) -> Unit,
     onTrackClick: (Track, Playlist) -> Unit,
+    onShuffleClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     Box {
@@ -172,17 +174,32 @@ fun Queue(
                                     )
                                 }
 
-                                IconButton(
-                                    onClick = {
-                                        showSearchField = true
-                                    }
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Search,
-                                        contentDescription = context.resources.getString(
-                                            R.string.track_search
+                                    IconButton(
+                                        onClick = onShuffleClick
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.Shuffle,
+                                            contentDescription = context.resources.getString(
+                                                R.string.shuffle_queue
+                                            )
                                         )
-                                    )
+                                    }
+
+                                    IconButton(
+                                        onClick = {
+                                            showSearchField = true
+                                        }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.Search,
+                                            contentDescription = context.resources.getString(
+                                                R.string.track_search
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
