@@ -1,6 +1,7 @@
 package com.dn0ne.player
 
 import android.Manifest
+import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -375,6 +377,13 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
 
+                            if (intent.action == MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH) {
+                                viewModel.playFromSearch(
+                                    query = intent.getStringExtra(SearchManager.QUERY).orEmpty(),
+                                    extras = intent.extras
+                                )
+                            }
+
                             if (intent.action == Intent.ACTION_VIEW) {
                                 val trackUri = intent.data
                                 trackUri?.let { uri ->
@@ -402,6 +411,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+
+        if (intent.action == MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH) {
+            getViewModel<PlayerViewModel>().playFromSearch(
+                query = intent.getStringExtra(SearchManager.QUERY).orEmpty(),
+                extras = intent.extras
+            )
+        }
 
         if (intent.action == Intent.ACTION_VIEW) {
             val trackUri = intent.data

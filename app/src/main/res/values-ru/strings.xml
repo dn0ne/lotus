@@ -329,4 +329,19 @@
 
     <string name="copy_error">Скопировать ошибку</string>
     <string name="select_all">Выбрать все</string>
+
+    <!-- Android Auto -->
+    <string name="auto_more">Ещё</string>
+    <string name="auto_shuffle">Перемешать</string>
+    <plurals name="auto_track_count">
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d трека</item>
+    </plurals>
+    <string name="auto_playback_mode_repeat">Повтор</string>
+    <string name="auto_playback_mode_repeat_one">Повтор трека</string>
+    <string name="auto_playback_mode_shuffle">Перемешать</string>
+    <string name="auto_permission_required">Разрешите Lotus доступ к музыке на телефоне</string>
+    <string name="auto_open_app">Открыть Lotus</string>
 </resources>

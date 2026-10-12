@@ -10,8 +10,8 @@ import androidx.compose.ui.util.fastForEach
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
-import androidx.media3.common.MediaItem
 import com.dn0ne.player.app.domain.track.Track
+import com.dn0ne.player.app.domain.track.buildTrackMediaItem
 import com.dn0ne.player.core.data.Settings
 import java.util.concurrent.TimeUnit
 
@@ -148,7 +148,19 @@ class TrackRepositoryImpl(
                     Uri.parse("content://media/external/audio/albumart"),
                     albumId
                 )
-                val mediaItem = MediaItem.fromUri(uri)
+                val mediaItem = buildTrackMediaItem(
+                    uri = uri,
+                    coverArtUri = albumArtUri,
+                    duration = duration,
+                    data = data,
+                    title = title,
+                    artist = artist,
+                    album = album,
+                    albumArtist = albumArtist,
+                    genre = genre,
+                    year = year,
+                    trackNumber = trackNumber
+                )
 
                 tracks += Track(
                     uri = uri,

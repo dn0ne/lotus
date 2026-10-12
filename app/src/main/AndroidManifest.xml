@@ -26,6 +26,11 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MusicPlayer.Splash">
+            <!-- On Android Automotive OS the car media template is used instead of this UI -->
+            <meta-data
+                android:name="androidx.car.app.launchable"
+                android:value="false" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,17 +44,36 @@
                 <data android:scheme="file" />
                 <data android:mimeType="audio/*" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service android:name=".PlaybackService"
             android:foregroundServiceType="mediaPlayback"
             android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.FOREGROUND_SERVICE">
+            android:exported="true">
             <intent-filter>
+                <action android:name="androidx.media3.session.MediaLibraryService" />
                 <action android:name="androidx.media3.session.MediaSessionService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name=".auto.ArtworkProvider"
+            android:authorities="${applicationId}.artwork"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+
+        <!-- Android Auto -->
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+        <meta-data
+            android:name="com.google.android.gms.car.notification.SmallIcon"
+            android:resource="@drawable/ic_stat_name" />
     </application>
 
 </manifest>

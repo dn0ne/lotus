@@ -19,6 +19,7 @@ import com.dn0ne.player.app.data.repository.RealmPlaylistRepository
 import com.dn0ne.player.app.data.repository.TrackRepository
 import com.dn0ne.player.app.data.repository.TrackRepositoryImpl
 import com.dn0ne.player.app.presentation.PlayerViewModel
+import com.dn0ne.player.auto.AutoLibrary
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpTimeout
@@ -102,6 +103,15 @@ val playerModule = module {
     single<EqualizerController> {
         EqualizerController(
             context = androidContext()
+        )
+    }
+
+    single<AutoLibrary> {
+        AutoLibrary(
+            context = androidContext(),
+            trackRepository = get(),
+            playlistRepository = get(),
+            settings = get()
         )
     }
 

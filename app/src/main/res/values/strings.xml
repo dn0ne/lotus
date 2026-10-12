@@ -341,4 +341,17 @@
 
     <string name="copy_error">Copy error</string>
     <string name="select_all">Select all</string>
+
+    <!-- Android Auto -->
+    <string name="auto_more">More</string>
+    <string name="auto_shuffle">Shuffle</string>
+    <plurals name="auto_track_count">
+        <item quantity="one">%d track</item>
+        <item quantity="other">%d tracks</item>
+    </plurals>
+    <string name="auto_playback_mode_repeat">Repeat</string>
+    <string name="auto_playback_mode_repeat_one">Repeat one</string>
+    <string name="auto_playback_mode_shuffle">Shuffle</string>
+    <string name="auto_permission_required">Allow Lotus to access your music on your phone</string>
+    <string name="auto_open_app">Open Lotus</string>
 </resources>

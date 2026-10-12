@@ -1,7 +1,9 @@
 package com.dn0ne.player.app.presentation
 
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
+import androidx.compose.ui.util.fastAny
 import androidx.compose.ui.util.fastFilter
 import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastForEach
@@ -23,6 +25,8 @@ import com.dn0ne.player.app.domain.lyrics.Lyrics
 import com.dn0ne.player.app.domain.lyrics.toSyncedLyrics
 import com.dn0ne.player.app.domain.metadata.Metadata
 import com.dn0ne.player.app.domain.playback.PlaybackMode
+import com.dn0ne.player.app.domain.playback.playbackMode
+import com.dn0ne.player.app.domain.playback.setPlaybackMode
 import com.dn0ne.player.app.domain.result.DataError
 import com.dn0ne.player.app.domain.result.Result
 import com.dn0ne.player.app.domain.sort.sortedBy
@@ -302,6 +306,14 @@ class PlayerViewModel(
 
             player?.addListener(
                 object : Player.Listener {
+                    override fun onRepeatModeChanged(repeatMode: Int) {
+                        onPlayerPlaybackModeChanged()
+                    }
+
+                    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+                        onPlayerPlaybackModeChanged()
+                    }
+
                     override fun onIsPlayingChanged(isPlaying: Boolean) {
                         _playbackState.update {
                             it.copy(
@@ -319,11 +331,22 @@ class PlayerViewModel(
                         mediaItem: MediaItem?,
                         reason: Int
                     ) {
+                        // The queue may have been replaced by another controller (e.g. Android Auto),
+                        // which saves it before starting playback
+                        val playlist = _playbackState.value.playlist
+                            ?.takeIf { playlist ->
+                                mediaItem == null || playlist.trackList.fastAny { it.mediaItem == mediaItem }
+                            }
+                            ?: savedPlayerState.playlist
+                        val currentTrack = playlist?.trackList?.fastFirstOrNull {
+                            it.mediaItem == mediaItem
+                        }
+                        savedPlayerState.track = currentTrack
+
                         _playbackState.update {
                             it.copy(
-                                currentTrack = it.playlist?.trackList?.fastFirstOrNull {
-                                    it.mediaItem == mediaItem
-                                }.also { savedPlayerState.track = it },
+                                playlist = playlist,
+                                currentTrack = currentTrack,
                                 position = 0L
                             )
                         }
@@ -1290,6 +1313,31 @@ class PlayerViewModel(
         }
     }
 
+    /**
+     * Plays music matching a voice search, e.g. "Play <query> on Lotus".
+     * The query is resolved by the media session, the same way as for Android Auto.
+     */
+    fun playFromSearch(query: String, extras: Bundle?) {
+        viewModelScope.launch {
+            while (player == null) delay(500L)
+
+            player?.run {
+                setMediaItem(
+                    MediaItem.Builder()
+                        .setRequestMetadata(
+                            MediaItem.RequestMetadata.Builder()
+                                .setSearchQuery(query)
+                                .setExtras(extras)
+                                .build()
+                        )
+                        .build()
+                )
+                prepare()
+                play()
+            }
+        }
+    }
+
     fun setPickedCoverArtBytes(bytes: ByteArray) {
         _manualInfoEditSheetState.update {
             it.copy(
@@ -1352,21 +1400,13 @@ class PlayerViewModel(
     }
 
     private fun setPlayerPlaybackMode(playbackMode: PlaybackMode) {
-        when (playbackMode) {
-            PlaybackMode.Repeat -> {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-                player?.shuffleModeEnabled = false
-            }
+        player?.setPlaybackMode(playbackMode)
+    }
 
-            PlaybackMode.RepeatOne -> {
-                player?.repeatMode = Player.REPEAT_MODE_ONE
-                player?.shuffleModeEnabled = false
-            }
-
-            PlaybackMode.Shuffle -> {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-                player?.shuffleModeEnabled = true
-            }
+    private fun onPlayerPlaybackModeChanged() {
+        val playbackMode = player?.playbackMode ?: return
+        _playbackState.update {
+            it.copy(playbackMode = playbackMode)
         }
     }
 
